@@ -1,15 +1,34 @@
-module.exports.getAllTools = (req, res, next) => {
-  // const {ip, baseUrl, hostname, header, body, ips} =req;
-  // console.log(ip, baseUrl, hostname, header, body, ips)
-  // res.download(__dirname, "/tools.controller.js")
+const tools = [
+  {
+    "id": 1,
+    "name": "Abdul Mozid Fahim",
+    "status": "single"
+  },
+  {
+    "id": 2,
+    "name": "Mahmudul Hasan Rahat",
+    "status": "In a relationship"
+  },
+  {
+    "id": 3,
+    "name": "Faysal Talukder",
+    "status": "Cheka Khor"
+  },
+]
 
-  res.send("tools found")
+module.exports.getAllTools = (req, res, next) => {
+ res.json(tools)
 }
 
 module.exports.savaATools = (req, res) => {
-  res.send("Post tools found!")
+  // console.log(req.query)
+  tools.push(req.body)
+  res.send(tools)
 }
 
 module.exports.getToolDetail = (req, res) => {
-  res.send("tool details found")
+ const {id} = req.params
+ console.log(id);
+ const foundTool = tools.find(tool => tool.id == id)
+ res.send(foundTool)
 }
