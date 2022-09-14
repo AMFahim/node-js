@@ -8,10 +8,20 @@ const port = process.env.PORT || 5000;
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 const nodemailer = require("nodemailer");
 const dbConnect = require('./utils/dbConnect');
-const toolsRoute = require('./routes/v1/tools.route')
+const toolsRoute = require('./routes/v1/tools.route');
+const viewCount = require("./middleware/viewCount");
+// import rateLimit from 'express-rate-limit'
+// const rateLimit = require("express-rate-limit")
+
 
 app.use(cors());
 app.use(express.json());
+
+// app.use(viewCount);
+
+
+
+// app.use(limiter)
 
 dbConnect()
 
