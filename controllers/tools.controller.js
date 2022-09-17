@@ -1,4 +1,4 @@
-const tools = [
+let tools = [
   {
     "id": 1,
     "name": "Abdul Mozid Fahim",
@@ -17,7 +17,7 @@ const tools = [
 ]
 
 module.exports.getAllTools = (req, res, next) => {
- res.json(tools)
+  res.json(tools)
 }
 
 module.exports.savaATools = (req, res) => {
@@ -27,8 +27,26 @@ module.exports.savaATools = (req, res) => {
 }
 
 module.exports.getToolDetail = (req, res) => {
- const {id} = req.params
- console.log(id);
- const foundTool = tools.find(tool => tool.id == id)
- res.send(foundTool)
+  const { id } = req.params
+  console.log(id);
+  const foundTool = tools.find(tool => tool.id === Number(id))
+  res.send(foundTool)
+}
+
+module.exports.updateTool = (req, res) => {
+  const { id } = req.params
+  const newData = tools.find(tool => tool.id === Number(id))
+  newData.id = id;
+  newData.name = req.body.name;
+  newData.status = req.body.status;
+  res.send(newData)
+}
+
+
+module.exports.deleteTool = (req, res) => {
+  const { id } = req.params
+  // const filter = {_id: id}
+
+  tools = tools.filter(tool => tool.id !== Number(id))
+  res.send(tools)
 }

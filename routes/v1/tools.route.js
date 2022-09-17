@@ -13,5 +13,7 @@ toolsRoute
 toolsRoute
 .route("/:id")
 .get(viewCount, limiter, allToolsControllers.getToolDetail)
+.patch(allToolsControllers.updateTool)
+.delete(allToolsControllers.deleteTool)
 
 module.exports=toolsRoute
