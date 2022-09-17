@@ -16,7 +16,8 @@ const viewCount = require("./middleware/viewCount");
 
 app.use(cors());
 app.use(express.json());
-
+app.use(express.static("public"));
+app.set("view engine", "ejs")
 // app.use(viewCount);
 
 
@@ -205,7 +206,14 @@ app.use("/api/v1/tools", toolsRoute)
 
 
 app.get("/", (req, res) => {
-  res.send("Hello World");
+  // res.sendFile(__dirname + "/public/test.html");
+  // res.send("Hello World")
+  res.render("home.ejs", {
+    id: 3,
+    user: {
+      name: "test"
+    }
+  })
 });
 
 app.listen(port, () => {
