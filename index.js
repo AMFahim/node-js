@@ -10,6 +10,7 @@ const nodemailer = require("nodemailer");
 const dbConnect = require('./utils/dbConnect');
 const toolsRoute = require('./routes/v1/tools.route');
 const viewCount = require("./middleware/viewCount");
+const errorHandler = require("./middleware/errorHandelar");
 // import rateLimit from 'express-rate-limit'
 // const rateLimit = require("express-rate-limit")
 
@@ -215,6 +216,8 @@ app.get("/", (req, res) => {
     }
   })
 });
+
+app.use(errorHandler)
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
