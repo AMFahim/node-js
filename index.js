@@ -11,6 +11,7 @@ const dbConnect = require('./utils/dbConnect');
 const toolsRoute = require('./routes/v1/tools.route');
 const viewCount = require("./middleware/viewCount");
 const errorHandler = require("./middleware/errorHandelar");
+const { connectToServer } = require("./utils/dbConnect");
 // import rateLimit from 'express-rate-limit'
 // const rateLimit = require("express-rate-limit")
 
@@ -25,11 +26,18 @@ app.set("view engine", "ejs")
 
 // app.use(limiter)
 
-dbConnect()
+connectToServer((err) => {
+  if(!err) {
+    app.listen(port, () => {
+      console.log(`Example app listening on port ${port}`);
+    });
+  } else {
+    console.log(err)
+  }
+})
 
 app.use("/api/v1/tools", toolsRoute)
 
-// async function run() {
 //   try {
 //     await client.connect();
 
@@ -219,8 +227,5 @@ app.get("/", (req, res) => {
 
 app.use(errorHandler)
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
-});
 
 

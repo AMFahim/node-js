@@ -1,3 +1,5 @@
+const { getDb } = require("../utils/dbConnect")
+
 let tools = [
   {
     "id": 1,
@@ -20,10 +22,19 @@ module.exports.getAllTools = (req, res, next) => {
   res.json(tools)
 }
 
-module.exports.savaATools = (req, res) => {
-  // console.log(req.query)
-  tools.push(req.body)
-  res.send(tools)
+module.exports.savaATools = async(req, res, next) => {
+  try {
+    const db = getDb();
+    const tool = req.body;
+
+    const result = await db.collection("clickwrk").insertOne(tool);
+    if(!result.insertedId) {
+      return res.status(400).send({status: false, error: "Something Went Wrong"})
+    }
+    res.send(`Tool added with id: ${result.insertedId}`)
+  } catch (error) {
+    next(error)
+  }
 }
 
 module.exports.getToolDetail = (req, res) => {
@@ -48,7 +59,6 @@ module.exports.updateTool = (req, res) => {
   newData.name = req.body.name;
   newData.status = req.body.status;
   res.send(newData)
-  
 }
 
 
