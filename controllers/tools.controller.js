@@ -63,31 +63,69 @@ module.exports.getToolDetail = async (req, res, next) => {
     const {id} = req.params;
 
     if(!ObjectId.isValid(id)) {
-      return res.status(400).json({success: false, error: "Not a valid tool id"})
+      return res.status(400).json({success: false, error: "Not a valid tool id  "})
     }
 
     const tool = await db.collection("clickwrk").findOne({_id: ObjectId(id)});
+
+    if(!tool) {
+      return res.status(400).json({success: false, error: "couldn't find  a tool with this id."})
+    }
+
     res.status(200).json({success: true, data: tool});
+
+   
 
   } catch (error) {
     next(error)
   }
 }
 
-module.exports.updateTool = (req, res) => {
-  const { id } = req.params
-  const newData = tools.find(tool => tool.id === Number(id))
-  newData.id = id;
-  newData.name = req.body.name;
-  newData.status = req.body.status;
-  res.send(newData)
+module.exports.updateTool = async (req, res, next) => {
+  try {
+    const db = getDb();
+    const {id} = req.params;
+
+    if(!ObjectId.isValid(id)) {
+      return res.status(400).json({success: false, error: "Not a valid tool id  "})
+    }
+
+    const tool = await db.collection("clickwrk").updateOne({_id: ObjectId(id)}, {$set: req.body});
+
+    if(!tool.modifiedCount) {
+      return res.status(400).json({success: false, error: "couldn't update the tool."})
+    }
+
+    res.status(200).json({success: true, message: "Successfully update a tool."});
+
+   
+
+  } catch (error) {
+    next(error)
+  }
 }
 
 
-module.exports.deleteTool = (req, res) => {
-  const { id } = req.params
-  // const filter = {_id: id}
+module.exports.deleteTool = async (req, res, next) => {
+  try {
+    const db = getDb();
+    const {id} = req.params;
 
-  tools = tools.filter(tool => tool.id !== Number(id))
-  res.send(tools)
+    if(!ObjectId.isValid(id)) {
+      return res.status(400).json({success: false, error: "Not a valid tool id  "})
+    }
+
+    const tool = await db.collection("clickwrk").deleteOne({_id: ObjectId(id)});
+
+    if(!tool.deletedCount) {
+      return res.status(400).json({success: false, error: "couldn't delete the tool."})
+    }
+
+    res.status(200).json({success: true, message: "Successfully deleted a tool."});
+
+   
+
+  } catch (error) {
+    next(error)
+  }
 }
