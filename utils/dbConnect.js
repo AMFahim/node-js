@@ -14,7 +14,7 @@ module.exports = {
         return callback(err);
       }
 
-      dbConnection = db.db("clickwrk");
+      dbConnection = db.db("inventory");
       console.log("Successfully connected to MongoDB.");
 
       return callback();
